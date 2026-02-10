@@ -1,0 +1,38 @@
+{
+    "name": "@kortexa-ai/invoices",
+    "version": "1.0.0",
+    "description": "Simple invoicing SaaS by kortexa.ai",
+    "copyright": "Copyright © 2025 kortexa.ai",
+    "author": {
+        "name": "Franci Penov",
+        "email": "francip@kortexa.ai",
+        "url": "https://kortexa.ai"
+    },
+    "keywords": ["invoices", "billing", "saas"],
+    "license": "MIT",
+    "private": true,
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kortexa-ai/invoices.git"
+    },
+    "type": "module",
+    "scripts": {
+        "start": "vite",
+        "dev": "vite",
+        "build": "vite build --mode production",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "lucide-react": "^0.555.0",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0"
+    },
+    "devDependencies": {
+        "@tailwindcss/vite": "^4.0.0",
+        "@vitejs/plugin-react-swc": "^4.2.2",
+        "globals": "^16.5.0",
+        "tailwindcss": "^4.0.0",
+        "vite": "^7.2.4",
+        "vite-plugin-mkcert": "^1.17.9"
+    }
+}
