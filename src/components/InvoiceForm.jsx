@@ -1,4 +1,4 @@
-import { Plus, Trash2, Upload, Image } from 'lucide-react';
+import { Plus, Trash2, Upload, Image, FilePlus, Trash } from 'lucide-react';
 
 const templates = [
   { id: 'modern', name: 'Modern', description: 'Clean and contemporary' },
@@ -24,6 +24,8 @@ export function InvoiceForm({
   onUpdateItem,
   onAddItem,
   onRemoveItem,
+  onNewInvoice,
+  onClearStoredData,
 }) {
   const handleLogoUpload = (e) => {
     const file = e.target.files[0];
@@ -54,6 +56,30 @@ export function InvoiceForm({
 
   return (
     <div className="space-y-6">
+      {/* Actions Bar */}
+      <div className="flex gap-3">
+        <button
+          onClick={onNewInvoice}
+          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          <FilePlus className="w-4 h-4" />
+          New Invoice
+        </button>
+        {onClearStoredData && (
+          <button
+            onClick={() => {
+              if (confirm('Clear all saved company data? This cannot be undone.')) {
+                onClearStoredData();
+              }
+            }}
+            className="flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-600 text-sm font-medium rounded-lg hover:bg-slate-200 transition-colors"
+          >
+            <Trash className="w-4 h-4" />
+            Clear Saved Data
+          </button>
+        )}
+      </div>
+
       {/* Template & Design */}
       <section className="bg-white rounded-xl border border-slate-200 p-6">
         <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wide mb-4">
