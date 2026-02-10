@@ -19,6 +19,15 @@
   --color-text-muted: #64748b;
 }
 
+/* Dark mode variables */
+.dark {
+  --color-background: #0f172a;
+  --color-surface: #1e293b;
+  --color-border: #334155;
+  --color-text: #f1f5f9;
+  --color-text-muted: #94a3b8;
+}
+
 /* Base styles */
 * {
   box-sizing: border-box;
@@ -54,13 +63,21 @@ body {
   }
   
   #invoice-preview {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    margin: 0;
+    position: static;
+    left: auto;
+    top: auto;
+    width: 210mm;
+    margin: 0 auto;
     padding: 0;
     background: white;
+    box-shadow: none;
+  }
+  
+  /* Reset negative margins on header image container for print */
+  #invoice-preview [class*="-mx-"][class*="-mt-"] {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-top: 0 !important;
   }
   
   .no-print {
@@ -85,6 +102,15 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
+}
+
+/* Dark mode scrollbar */
+.dark ::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
 }
 
 /* Utility classes */

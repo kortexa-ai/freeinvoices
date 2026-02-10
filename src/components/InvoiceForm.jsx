@@ -72,7 +72,7 @@ export function InvoiceForm({
                 onClearStoredData();
               }
             }}
-            className="flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-600 text-sm font-medium rounded-lg hover:bg-slate-200 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
           >
             <Trash className="w-4 h-4" />
             Clear Saved Data
@@ -81,14 +81,14 @@ export function InvoiceForm({
       </div>
 
       {/* Template & Design */}
-      <section className="bg-white rounded-xl border border-slate-200 p-6">
-        <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wide mb-4">
+      <section className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+        <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100 uppercase tracking-wide mb-4">
           Design & Template
         </h2>
         
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
               Template
             </label>
             <div className="grid grid-cols-3 gap-3">
@@ -99,24 +99,24 @@ export function InvoiceForm({
                   className={`p-3 rounded-lg border text-left transition-all ${
                     data.template === template.id
                       ? 'border-blue-600 bg-blue-50 text-blue-900'
-                      : 'border-slate-200 hover:border-slate-300 text-slate-700'
+                      : 'border-slate-200 dark:border-slate-600 hover:border-slate-300 dark:hover:border-slate-500 text-slate-700 dark:text-slate-300'
                   }`}
                 >
                   <div className="font-medium text-sm">{template.name}</div>
-                  <div className="text-xs text-slate-500 mt-0.5">{template.description}</div>
+                  <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{template.description}</div>
                 </button>
               ))}
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
               Font
             </label>
             <select
               value={data.font}
               onChange={(e) => onUpdate({ font: e.target.value })}
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
             >
               {fonts.map((font) => (
                 <option key={font.id} value={font.id}>
@@ -128,7 +128,7 @@ export function InvoiceForm({
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                 Company Logo
               </label>
               <div className="relative">
@@ -141,7 +141,7 @@ export function InvoiceForm({
                 />
                 <label
                   htmlFor="logo-upload"
-                  className="flex items-center justify-center gap-2 w-full px-3 py-2 border border-slate-300 border-dashed rounded-lg hover:border-slate-400 hover:bg-slate-50 cursor-pointer transition-colors"
+                  className="flex items-center justify-center gap-2 w-full px-3 py-2 border border-slate-300 dark:border-slate-600 border-dashed rounded-lg hover:border-slate-400 dark:hover:border-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer transition-colors"
                 >
                   {data.logo ? (
                     <>
@@ -151,7 +151,7 @@ export function InvoiceForm({
                   ) : (
                     <>
                       <Upload className="w-4 h-4 text-slate-400" />
-                      <span className="text-sm text-slate-600">Upload logo</span>
+                      <span className="text-sm text-slate-600 dark:text-slate-400">Upload logo</span>
                     </>
                   )}
                 </label>
@@ -167,7 +167,7 @@ export function InvoiceForm({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                 Header Image
               </label>
               <div className="relative">
@@ -180,7 +180,7 @@ export function InvoiceForm({
                 />
                 <label
                   htmlFor="header-upload"
-                  className="flex items-center justify-center gap-2 w-full px-3 py-2 border border-slate-300 border-dashed rounded-lg hover:border-slate-400 hover:bg-slate-50 cursor-pointer transition-colors"
+                  className="flex items-center justify-center gap-2 w-full px-3 py-2 border border-slate-300 dark:border-slate-600 border-dashed rounded-lg hover:border-slate-400 dark:hover:border-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer transition-colors"
                 >
                   {data.headerImage ? (
                     <>
@@ -190,7 +190,7 @@ export function InvoiceForm({
                   ) : (
                     <>
                       <Upload className="w-4 h-4 text-slate-400" />
-                      <span className="text-sm text-slate-600">Upload header</span>
+                      <span className="text-sm text-slate-600 dark:text-slate-400">Upload header</span>
                     </>
                   )}
                 </label>
@@ -209,13 +209,13 @@ export function InvoiceForm({
       </section>
 
       {/* Company Details */}
-      <section className="bg-white rounded-xl border border-slate-200 p-6">
-        <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wide mb-4">
+      <section className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+        <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100 uppercase tracking-wide mb-4">
           From
         </h2>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
               Company Name
             </label>
             <input
@@ -223,11 +223,11 @@ export function InvoiceForm({
               value={data.companyName}
               onChange={(e) => onUpdate({ companyName: e.target.value })}
               placeholder="Your Company Name"
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
               Address
             </label>
             <textarea
@@ -235,12 +235,12 @@ export function InvoiceForm({
               onChange={(e) => onUpdate({ companyAddress: e.target.value })}
               placeholder="Street Address\nCity, State ZIP\nCountry"
               rows={3}
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm resize-none"
+              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm resize-none bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                 Email
               </label>
               <input
@@ -248,11 +248,11 @@ export function InvoiceForm({
                 value={data.companyEmail}
                 onChange={(e) => onUpdate({ companyEmail: e.target.value })}
                 placeholder="company@example.com"
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                 Phone
               </label>
               <input
@@ -260,7 +260,7 @@ export function InvoiceForm({
                 value={data.companyPhone}
                 onChange={(e) => onUpdate({ companyPhone: e.target.value })}
                 placeholder="+1 (555) 123-4567"
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
               />
             </div>
           </div>
@@ -268,13 +268,13 @@ export function InvoiceForm({
       </section>
 
       {/* Client Details */}
-      <section className="bg-white rounded-xl border border-slate-200 p-6">
-        <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wide mb-4">
+      <section className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+        <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100 uppercase tracking-wide mb-4">
           Bill To
         </h2>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
               Client Name
             </label>
             <input
@@ -282,11 +282,11 @@ export function InvoiceForm({
               value={data.clientName}
               onChange={(e) => onUpdate({ clientName: e.target.value })}
               placeholder="Client Name"
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
               Address
             </label>
             <textarea
@@ -294,11 +294,11 @@ export function InvoiceForm({
               onChange={(e) => onUpdate({ clientAddress: e.target.value })}
               placeholder="Client Address"
               rows={3}
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm resize-none"
+              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm resize-none bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
               Email
             </label>
             <input
@@ -306,37 +306,37 @@ export function InvoiceForm({
               value={data.clientEmail}
               onChange={(e) => onUpdate({ clientEmail: e.target.value })}
               placeholder="client@example.com"
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
             />
           </div>
         </div>
       </section>
 
       {/* Invoice Details */}
-      <section className="bg-white rounded-xl border border-slate-200 p-6">
-        <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wide mb-4">
+      <section className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+        <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100 uppercase tracking-wide mb-4">
           Invoice Details
         </h2>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
               Invoice Number
             </label>
             <input
               type="text"
               value={data.invoiceNumber}
               onChange={(e) => onUpdate({ invoiceNumber: e.target.value })}
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
               Currency
             </label>
             <select
               value={data.currency}
               onChange={(e) => onUpdate({ currency: e.target.value })}
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
             >
               {currencies.map((curr) => (
                 <option key={curr.id} value={curr.id}>
@@ -345,41 +345,43 @@ export function InvoiceForm({
               ))}
             </select>
           </div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
               Invoice Date
             </label>
             <input
               type="date"
               value={data.invoiceDate}
               onChange={(e) => onUpdate({ invoiceDate: e.target.value })}
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
               Due Date
             </label>
             <input
               type="date"
               value={data.dueDate}
               onChange={(e) => onUpdate({ dueDate: e.target.value })}
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
             />
           </div>
         </div>
       </section>
 
       {/* Line Items */}
-      <section className="bg-white rounded-xl border border-slate-200 p-6">
-        <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wide mb-4">
+      <section className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+        <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100 uppercase tracking-wide mb-4">
           Line Items
         </h2>
         <div className="space-y-3">
           {data.items.map((item, index) => (
             <div
               key={item.id}
-              className="grid grid-cols-12 gap-3 items-start p-3 bg-slate-50 rounded-lg"
+              className="grid grid-cols-12 gap-3 items-start p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg"
             >
               <div className="col-span-5">
                 <input
@@ -387,7 +389,7 @@ export function InvoiceForm({
                   value={item.description}
                   onChange={(e) => onUpdateItem(item.id, 'description', e.target.value)}
                   placeholder="Item description"
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
                 />
               </div>
               <div className="col-span-2">
@@ -396,7 +398,7 @@ export function InvoiceForm({
                   min="1"
                   value={item.quantity}
                   onChange={(e) => onUpdateItem(item.id, 'quantity', parseFloat(e.target.value) || 0)}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
                 />
               </div>
               <div className="col-span-3">
@@ -406,11 +408,11 @@ export function InvoiceForm({
                   step="0.01"
                   value={item.rate}
                   onChange={(e) => onUpdateItem(item.id, 'rate', parseFloat(e.target.value) || 0)}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
                 />
               </div>
               <div className="col-span-1">
-                <div className="py-2 text-sm font-medium text-slate-700 text-right">
+                <div className="py-2 text-sm font-medium text-slate-700 dark:text-slate-300 text-right">
                   {item.amount.toFixed(2)}
                 </div>
               </div>
@@ -437,13 +439,13 @@ export function InvoiceForm({
       </section>
 
       {/* Totals */}
-      <section className="bg-white rounded-xl border border-slate-200 p-6">
-        <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wide mb-4">
+      <section className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+        <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100 uppercase tracking-wide mb-4">
           Totals
         </h2>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
               Tax Rate (%)
             </label>
             <input
@@ -453,11 +455,11 @@ export function InvoiceForm({
               step="0.01"
               value={data.taxRate}
               onChange={(e) => onUpdate({ taxRate: parseFloat(e.target.value) || 0 })}
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
               Discount (%)
             </label>
             <input
@@ -467,28 +469,28 @@ export function InvoiceForm({
               step="0.01"
               value={data.discount}
               onChange={(e) => onUpdate({ discount: parseFloat(e.target.value) || 0 })}
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
             />
           </div>
         </div>
-        <div className="mt-4 pt-4 border-t border-slate-200 space-y-2">
+        <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700 space-y-2">
           <div className="flex justify-between text-sm">
-            <span className="text-slate-600">Subtotal</span>
+            <span className="text-slate-600 dark:text-slate-400">Subtotal</span>
             <span className="font-medium">{subtotal.toFixed(2)}</span>
           </div>
           {data.taxRate > 0 && (
             <div className="flex justify-between text-sm">
-              <span className="text-slate-600">Tax ({data.taxRate}%)</span>
+              <span className="text-slate-600 dark:text-slate-400">Tax ({data.taxRate}%)</span>
               <span className="font-medium">{tax.toFixed(2)}</span>
             </div>
           )}
           {data.discount > 0 && (
             <div className="flex justify-between text-sm">
-              <span className="text-slate-600">Discount ({data.discount}%)</span>
+              <span className="text-slate-600 dark:text-slate-400">Discount ({data.discount}%)</span>
               <span className="font-medium text-red-600">-{discount.toFixed(2)}</span>
             </div>
           )}
-          <div className="flex justify-between text-lg font-semibold pt-2 border-t border-slate-200">
+          <div className="flex justify-between text-lg font-semibold pt-2 border-t border-slate-200 dark:border-slate-700">
             <span>Total</span>
             <span>{total.toFixed(2)}</span>
           </div>
@@ -496,8 +498,8 @@ export function InvoiceForm({
       </section>
 
       {/* Notes */}
-      <section className="bg-white rounded-xl border border-slate-200 p-6">
-        <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wide mb-4">
+      <section className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+        <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100 uppercase tracking-wide mb-4">
           Notes
         </h2>
         <textarea

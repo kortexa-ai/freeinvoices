@@ -206,6 +206,7 @@ export function usePersistentInvoice() {
   return {
     invoiceData,
     companyData,
+    setInvoiceData,
     handlers: {
       handleUpdateInvoice,
       handleUpdateItem,
