@@ -8,7 +8,11 @@
         "email": "francip@kortexa.ai",
         "url": "https://kortexa.ai"
     },
-    "keywords": ["invoices", "billing", "saas"],
+    "keywords": [
+        "invoices",
+        "billing",
+        "saas"
+    ],
     "license": "MIT",
     "private": true,
     "repository": {
