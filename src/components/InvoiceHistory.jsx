@@ -10,15 +10,21 @@ export function InvoiceHistoryPanel({
   onLoadDraft,
   onClearDraft,
   currentInvoiceNumber,
+  isOpen,
+  onClose,
 }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [internalIsOpen, setInternalIsOpen] = useState(false);
+  
+  // Use external isOpen if provided, otherwise use internal state
+  const open = isOpen !== undefined ? isOpen : internalIsOpen;
+  const setOpen = onClose ? (value) => { if (!value) onClose(); } : setInternalIsOpen;
 
   // Listen for toggle event from keyboard shortcut
   useEffect(() => {
-    const handleToggle = () => setIsOpen(prev => !prev);
+    const handleToggle = () => setOpen(prev => !prev);
     window.addEventListener('toggle-invoice-history', handleToggle);
     return () => window.removeEventListener('toggle-invoice-history', handleToggle);
-  }, []);
+  }, [setOpen]);
 
   const formatDate = (isoString) => {
     const date = new Date(isoString);
@@ -36,24 +42,8 @@ export function InvoiceHistoryPanel({
     return `${symbol}${amount.toFixed(2)}`;
   };
 
-  const hasContent = history.length > 0 || draft;
-
-  if (!isOpen) {
-    return (
-      <button
-        onClick={() => setIsOpen(true)}
-        className="fixed right-4 bottom-4 z-40 flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-medium rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
-        title="View invoice history (Ctrl+H)"
-      >
-        <History className="w-4 h-4" />
-        <span>History</span>
-        {hasContent && (
-          <span className="ml-1 px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs rounded-full">
-            {history.length + (draft ? 1 : 0)}
-          </span>
-        )}
-      </button>
-    );
+  if (!open) {
+    return null;
   }
 
   return (
@@ -65,7 +55,7 @@ export function InvoiceHistoryPanel({
           <span className="font-medium text-slate-700 dark:text-slate-300">Invoice History</span>
         </div>
         <button
-          onClick={() => setIsOpen(false)}
+          onClick={() => setOpen(false)}
           className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
         >
           <X className="w-4 h-4" />
@@ -91,7 +81,7 @@ export function InvoiceHistoryPanel({
                 <button
                   onClick={() => {
                     onLoadDraft(draft);
-                    setIsOpen(false);
+                    setOpen(false);
                   }}
                   className="px-2 py-1 text-xs font-medium text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/40 rounded transition-colors"
                 >
@@ -159,7 +149,7 @@ export function InvoiceHistoryPanel({
                   <button
                     onClick={() => {
                       onLoadInvoice(item.data);
-                      setIsOpen(false);
+                      setOpen(false);
                     }}
                     className="flex-1 px-2 py-1 text-xs font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/40 rounded transition-colors"
                   >

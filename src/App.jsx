@@ -8,8 +8,11 @@ import { useDarkMode } from './hooks/useDarkMode';
 import { useInvoiceHistory } from './hooks/useInvoiceHistory';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 import { useState, useCallback, useEffect } from 'react';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
+import About from './pages/About';
 
-function App() {
+function InvoiceApp() {
   const { invoiceData, handlers, setInvoiceData } = usePersistentInvoice();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   const { 
@@ -23,6 +26,7 @@ function App() {
   } = useInvoiceHistory(invoiceData);
   
   const [showShortcuts, setShowShortcuts] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
 
   // Handle save invoice to history
   const handleSave = useCallback(() => {
@@ -43,8 +47,7 @@ function App() {
 
   // Handle history toggle
   const handleToggleHistory = useCallback(() => {
-    // The history panel manages its own open/close state
-    // This is just for the keyboard shortcut
+    setShowHistory(prev => !prev);
   }, []);
 
   // Setup keyboard shortcuts
@@ -69,13 +72,15 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors flex flex-col">
       <Header 
         isDarkMode={isDarkMode}
         onToggleDarkMode={toggleDarkMode}
         onShowShortcuts={() => setShowShortcuts(true)}
+        onToggleHistory={handleToggleHistory}
+        historyCount={history.length + (draft ? 1 : 0)}
       />
-      <main className="max-w-[1600px] mx-auto p-4 lg:p-6">
+      <main className="flex-1 max-w-[1600px] mx-auto p-4 lg:p-6 w-full">
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
           <div className="no-print">
             <InvoiceForm
@@ -94,7 +99,7 @@ function App() {
         </div>
       </main>
 
-      {/* History Panel - always render if there's content */}
+      {/* History Panel */}
       <InvoiceHistoryPanel
         history={history}
         draft={draft}
@@ -104,6 +109,8 @@ function App() {
         onLoadDraft={handleLoadDraft}
         onClearDraft={clearDraft}
         currentInvoiceNumber={invoiceData.invoiceNumber}
+        isOpen={showHistory}
+        onClose={() => setShowHistory(false)}
       />
 
       {/* Keyboard Shortcuts Help */}
@@ -111,8 +118,50 @@ function App() {
         isOpen={showShortcuts} 
         onClose={() => setShowShortcuts(false)} 
       />
+
+      {/* Footer */}
+      <footer className="no-print border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+        <div className="max-w-[1600px] mx-auto px-4 lg:px-6 py-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-slate-500 dark:text-slate-400">
+            <p>
+              Made by{' '}
+              <a 
+                href="https://kortexa.ai" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-blue-600 dark:text-blue-400 hover:underline"
+              >
+                kortexa.ai
+              </a>
+            </p>
+            <p className="flex items-center gap-2">
+              <a href="/about" className="hover:text-slate-700 dark:hover:text-slate-200">About</a>
+              <span>·</span>
+              <a href="/privacy" className="hover:text-slate-700 dark:hover:text-slate-200">Privacy</a>
+              <span>·</span>
+              <a href="/terms" className="hover:text-slate-700 dark:hover:text-slate-200">Terms</a>
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
+}
+
+function App() {
+  const [path, setPath] = useState(window.location.pathname);
+
+  useEffect(() => {
+    const handlePopState = () => setPath(window.location.pathname);
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  // Simple routing
+  if (path === '/privacy') return <Privacy />;
+  if (path === '/terms') return <Terms />;
+  if (path === '/about') return <About />;
+  return <InvoiceApp />;
 }
 
 export default App;
