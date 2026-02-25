@@ -1,10 +1,10 @@
-import { X, Command, Printer, Save, FilePlus, Moon, History } from 'lucide-react';
+import { X, Command, Download, Save, FilePlus, Moon, History } from 'lucide-react';
 
 export function KeyboardShortcutsHelp({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   const shortcuts = [
-    { key: 'Ctrl + P', mac: '⌘ + P', icon: Printer, description: 'Print / Download PDF' },
+    { key: 'Ctrl + P', mac: '⌘ + P', icon: Download, description: 'Download PDF' },
     { key: 'Ctrl + S', mac: '⌘ + S', icon: Save, description: 'Save invoice to history' },
     { key: 'Ctrl + N', mac: '⌘ + N', icon: FilePlus, description: 'Create new invoice' },
     { key: 'Ctrl + D', mac: '⌘ + D', icon: Moon, description: 'Toggle dark mode' },

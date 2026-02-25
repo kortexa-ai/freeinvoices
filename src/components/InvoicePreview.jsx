@@ -35,7 +35,7 @@ export function InvoicePreview({ data }) {
     <div className="sticky top-24">
       <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 mb-4 no-print">
         <p className="text-sm text-slate-600 dark:text-slate-400 text-center">
-          Preview your invoice below. Click "Print / Download PDF" to save.
+          Preview your invoice below. Click "Download" to save.
         </p>
       </div>
       <div
