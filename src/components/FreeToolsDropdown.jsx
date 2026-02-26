@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Files, FileText, QrCode, PenLine, Image, CreditCard, ScrollText, ExternalLink } from 'lucide-react';
+import { Files, FileText, QrCode, PenLine, Image, CreditCard, ScrollText, Video, Headphones, BarChart3, ExternalLink } from 'lucide-react';
 
 const CURRENT_TOOL = 'freeinvoices';
 
@@ -13,6 +13,9 @@ const TOOLS = [
   { id: 'freebusinesscards', name: 'Business Cards', url: 'https://freebusinesscards.xyz', Icon: CreditCard, bg: 'bg-purple-600' },
   { id: 'freecontractforms', name: 'Contract Forms', url: 'https://freecontractforms.xyz', Icon: ScrollText, bg: 'bg-rose-600' },
   { id: 'freetranslator', name: 'Translator', url: 'https://freetranslator.xyz', logo: 'https://freetranslator.xyz/icon-192.png' },
+  { id: 'freevideotools', name: 'Video Tools', url: 'https://freevideotools.xyz', Icon: Video, bg: 'bg-teal-600' },
+  { id: 'freeaudiotools', name: 'Audio Tools', url: 'https://freeaudiotools.xyz', Icon: Headphones, bg: 'bg-cyan-600' },
+  { id: 'freecharttools', name: 'Chart Tools', url: 'https://freecharttools.xyz', Icon: BarChart3, bg: 'bg-blue-600' },
 ];
 
 export default function FreeToolsDropdown({ isOpen, onClose }) {

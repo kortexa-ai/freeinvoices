@@ -1,4 +1,4 @@
-import { Files, FileText, QrCode, PenLine, Image, CreditCard, ScrollText, ExternalLink } from 'lucide-react';
+import { Files, FileText, QrCode, PenLine, Image, CreditCard, ScrollText, Video, Headphones, BarChart3, ExternalLink } from 'lucide-react';
 
 const CURRENT_TOOL = 'freeinvoices';
 
@@ -12,6 +12,9 @@ const TOOLS = [
   { id: 'freebusinesscards', name: 'Business Cards', description: 'Create and print professional business cards', url: 'https://freebusinesscards.xyz', Icon: CreditCard, bg: 'bg-purple-600' },
   { id: 'freecontractforms', name: 'Contract Forms', description: 'Free contract templates for freelancers', url: 'https://freecontractforms.xyz', Icon: ScrollText, bg: 'bg-rose-600' },
   { id: 'freetranslator', name: 'Translator', description: 'Transcribe audio & translate text with on-device AI', url: 'https://freetranslator.xyz', logo: 'https://freetranslator.xyz/icon-192.png' },
+  { id: 'freevideotools', name: 'Video Tools', description: 'Convert, compress, trim, and edit videos', url: 'https://freevideotools.xyz', Icon: Video, bg: 'bg-teal-600' },
+  { id: 'freeaudiotools', name: 'Audio Tools', description: 'Trim, convert, and merge audio files', url: 'https://freeaudiotools.xyz', Icon: Headphones, bg: 'bg-cyan-600' },
+  { id: 'freecharttools', name: 'Chart Tools', description: 'Create bar, line, and pie charts from data', url: 'https://freecharttools.xyz', Icon: BarChart3, bg: 'bg-blue-600' },
 ];
 
 export default function FreeTools() {
