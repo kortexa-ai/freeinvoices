@@ -11,6 +11,7 @@ import { useState, useCallback, useEffect } from 'react';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import About from './pages/About';
+import FreeTools from './pages/FreeTools';
 
 function InvoiceApp() {
   const { invoiceData, handlers, setInvoiceData } = usePersistentInvoice();
@@ -63,13 +64,12 @@ function InvoiceApp() {
     const handleKeyDown = (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'h') {
         e.preventDefault();
-        // Dispatch a custom event that the history panel can listen to
-        window.dispatchEvent(new CustomEvent('toggle-invoice-history'));
+        handleToggleHistory();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [handleToggleHistory]);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors flex flex-col">
@@ -161,6 +161,7 @@ function App() {
   if (path === '/privacy') return <Privacy />;
   if (path === '/terms') return <Terms />;
   if (path === '/about') return <About />;
+  if (path === '/freetools') return <FreeTools />;
   return <InvoiceApp />;
 }
 

@@ -16,4 +16,8 @@
     <loc>https://freeinvoices.xyz/terms</loc>
     <priority>0.3</priority>
   </url>
+  <url>
+    <loc>https://freeinvoices.xyz/freetools</loc>
+    <priority>0.5</priority>
+  </url>
 </urlset>

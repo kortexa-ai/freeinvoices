@@ -1,4 +1,4 @@
-import { Plus, Trash2, Upload, Image, FilePlus, Trash } from 'lucide-react';
+import { Plus, Trash2, Upload, Image, FilePlus, Trash, Download } from 'lucide-react';
 
 const templates = [
   { id: 'modern', name: 'Modern', description: 'Clean and contemporary' },
@@ -78,6 +78,13 @@ export function InvoiceForm({
             Clear Saved Data
           </button>
         )}
+        <button
+          onClick={() => window.print()}
+          className="ml-auto flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          <Download className="w-4 h-4" />
+          Download
+        </button>
       </div>
 
       {/* Template & Design */}
