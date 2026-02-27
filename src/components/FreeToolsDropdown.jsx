@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Files, FileText, QrCode, PenLine, Image, CreditCard, ScrollText, Video, Headphones, BarChart3, ExternalLink } from 'lucide-react';
+import { Files, FileText, QrCode, PenLine, Image, CreditCard, ScrollText, Languages, Video, AudioLines, BarChart3, ExternalLink } from 'lucide-react';
 
 const CURRENT_TOOL = 'freeinvoices';
 
@@ -12,9 +12,9 @@ const TOOLS = [
   { id: 'freeimagetools', name: 'Image Tools', url: 'https://freeimagetools.xyz', Icon: Image, bg: 'bg-amber-600' },
   { id: 'freebusinesscards', name: 'Business Cards', url: 'https://freebusinesscards.xyz', Icon: CreditCard, bg: 'bg-purple-600' },
   { id: 'freecontractforms', name: 'Contract Forms', url: 'https://freecontractforms.xyz', Icon: ScrollText, bg: 'bg-rose-600' },
-  { id: 'freetranslator', name: 'Translator', url: 'https://freetranslator.xyz', logo: 'https://freetranslator.xyz/icon-192.png' },
+  { id: 'freetranslator', name: 'Translator', url: 'https://freetranslator.xyz', Icon: Languages, bg: 'bg-cyan-600' },
   { id: 'freevideotools', name: 'Video Tools', url: 'https://freevideotools.xyz', Icon: Video, bg: 'bg-teal-600' },
-  { id: 'freeaudiotools', name: 'Audio Tools', url: 'https://freeaudiotools.xyz', Icon: Headphones, bg: 'bg-cyan-600' },
+  { id: 'freeaudiotools', name: 'Audio Tools', url: 'https://freeaudiotools.xyz', Icon: AudioLines, bg: 'bg-cyan-600' },
   { id: 'freecharttools', name: 'Chart Tools', url: 'https://freecharttools.xyz', Icon: BarChart3, bg: 'bg-blue-600' },
 ];
 
@@ -51,13 +51,9 @@ export default function FreeToolsDropdown({ isOpen, onClose }) {
           rel="noopener noreferrer"
           className="flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
         >
-          {tool.logo ? (
-            <img src={tool.logo} alt="" className="w-8 h-8 rounded-lg shrink-0" />
-          ) : (
-            <div className={`w-8 h-8 ${tool.bg} rounded-lg flex items-center justify-center shrink-0`}>
-              <tool.Icon className="w-4 h-4 text-white" />
-            </div>
-          )}
+          <div className={`w-8 h-8 ${tool.bg} rounded-lg flex items-center justify-center shrink-0`}>
+            <tool.Icon className="w-4 h-4 text-white" />
+          </div>
           <span className="text-sm font-medium text-slate-700 dark:text-slate-200">{tool.name}</span>
           <ExternalLink className="w-3.5 h-3.5 text-slate-400 ml-auto" />
         </a>
