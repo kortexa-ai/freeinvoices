@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { History, Trash2, RotateCcw, X, FileText } from 'lucide-react';
 
 export function InvoiceHistoryPanel({
@@ -28,6 +29,8 @@ export function InvoiceHistoryPanel({
     return `${symbol}${amount.toFixed(2)}`;
   };
 
+  const [confirmClearAll, setConfirmClearAll] = useState(false);
+
   return (
     <>
       {/* Backdrop */}
@@ -51,17 +54,29 @@ export function InvoiceHistoryPanel({
             <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">Invoice History</h2>
           </div>
           <div className="flex items-center gap-1">
-            {history.length > 0 && (
+            {history.length > 0 && !confirmClearAll && (
               <button
-                onClick={() => {
-                  if (confirm('Clear all invoice history? This cannot be undone.')) {
-                    onClearHistory();
-                  }
-                }}
+                onClick={() => setConfirmClearAll(true)}
                 className="px-2 py-1 text-xs text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
               >
                 Clear all
               </button>
+            )}
+            {confirmClearAll && (
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => { onClearHistory(); setConfirmClearAll(false); }}
+                  className="px-2 py-1 text-xs bg-red-600 text-white rounded transition-colors hover:bg-red-700"
+                >
+                  Confirm
+                </button>
+                <button
+                  onClick={() => setConfirmClearAll(false)}
+                  className="px-2 py-1 text-xs text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
             )}
             <button
               onClick={onClose}

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 
-const DARK_MODE_KEY = 'freeinvoices_dark_mode';
+const DARK_MODE_KEY = 'freetools_dark_mode';
 
 /**
  * Custom hook for dark mode toggle

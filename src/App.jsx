@@ -28,11 +28,13 @@ function InvoiceApp() {
   
   const [showShortcuts, setShowShortcuts] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
+  const [showSaved, setShowSaved] = useState(false);
 
   // Handle save invoice to history
   const handleSave = useCallback(() => {
     saveToHistory(invoiceData);
-    alert('Invoice saved to history!');
+    setShowSaved(true);
+    setTimeout(() => setShowSaved(false), 2000);
   }, [invoiceData, saveToHistory]);
 
   // Handle loading an invoice from history
@@ -80,7 +82,13 @@ function InvoiceApp() {
         onToggleHistory={handleToggleHistory}
         historyCount={history.length + (draft ? 1 : 0)}
       />
-      <main className="flex-1 max-w-[1600px] mx-auto p-4 lg:p-6 w-full">
+      {/* Save confirmation toast */}
+      {showSaved && (
+        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg shadow-lg animate-fade-in">
+          Invoice saved to history!
+        </div>
+      )}
+      <main className="flex-1 max-w-6xl mx-auto p-4 lg:p-6 w-full">
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
           <div className="no-print">
             <InvoiceForm
@@ -121,7 +129,7 @@ function InvoiceApp() {
 
       {/* Footer */}
       <footer className="no-print border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
-        <div className="max-w-[1600px] mx-auto px-4 lg:px-6 py-4">
+        <div className="max-w-6xl mx-auto px-4 lg:px-6 py-4">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-slate-500 dark:text-slate-400">
             <p>
               Made by{' '}
@@ -148,6 +156,18 @@ function InvoiceApp() {
   );
 }
 
+function NotFound() {
+  return (
+    <div className="min-h-[60vh] flex items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-6xl font-bold text-slate-200 dark:text-slate-700">404</h1>
+        <p className="mt-2 text-slate-500 dark:text-slate-400">Page not found</p>
+        <a href="/" className="mt-4 inline-block text-blue-600 dark:text-blue-400 hover:underline">Go home</a>
+      </div>
+    </div>
+  );
+}
+
 function App() {
   const [path, setPath] = useState(window.location.pathname);
 
@@ -162,6 +182,7 @@ function App() {
   if (path === '/terms') return <Terms />;
   if (path === '/about') return <About />;
   if (path === '/freetools') return <FreeTools />;
+  if (path !== '/') return <NotFound />;
   return <InvoiceApp />;
 }
 

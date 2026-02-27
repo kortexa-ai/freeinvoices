@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Plus, Trash2, Upload, Image, FilePlus, Trash, Download, PenLine } from 'lucide-react';
 
 const toolUrl = (domain) => {
@@ -33,6 +34,7 @@ export function InvoiceForm({
   onNewInvoice,
   onClearStoredData,
 }) {
+  const [confirmClear, setConfirmClear] = useState(false);
   const handleLogoUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -71,18 +73,31 @@ export function InvoiceForm({
           <FilePlus className="w-4 h-4" />
           New Invoice
         </button>
-        {onClearStoredData && (
+        {onClearStoredData && !confirmClear && (
           <button
-            onClick={() => {
-              if (confirm('Clear all saved company data? This cannot be undone.')) {
-                onClearStoredData();
-              }
-            }}
+            onClick={() => setConfirmClear(true)}
             className="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
           >
             <Trash className="w-4 h-4" />
             Clear Saved Data
           </button>
+        )}
+        {onClearStoredData && confirmClear && (
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-red-600 dark:text-red-400">Clear all saved data?</span>
+            <button
+              onClick={() => { onClearStoredData(); setConfirmClear(false); }}
+              className="px-3 py-1.5 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors"
+            >
+              Yes, clear
+            </button>
+            <button
+              onClick={() => setConfirmClear(false)}
+              className="px-3 py-1.5 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors"
+            >
+              Cancel
+            </button>
+          </div>
         )}
         <a
           href={`${toolUrl('freesignatures.xyz')}/`}
@@ -403,9 +418,10 @@ export function InvoiceForm({
           {data.items.map((item, index) => (
             <div
               key={item.id}
-              className="grid grid-cols-12 gap-3 items-start p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg"
+              className="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg"
             >
-              <div className="col-span-5">
+              {/* Mobile: stacked layout */}
+              <div className="space-y-2 sm:hidden">
                 <input
                   type="text"
                   value={item.description}
@@ -413,40 +429,81 @@ export function InvoiceForm({
                   placeholder="Item description"
                   className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
                 />
-              </div>
-              <div className="col-span-2">
-                <input
-                  type="number"
-                  min="1"
-                  value={item.quantity}
-                  onChange={(e) => onUpdateItem(item.id, 'quantity', parseFloat(e.target.value) || 0)}
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
-                />
-              </div>
-              <div className="col-span-3">
-                <input
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  value={item.rate}
-                  onChange={(e) => onUpdateItem(item.id, 'rate', parseFloat(e.target.value) || 0)}
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
-                />
-              </div>
-              <div className="col-span-1">
-                <div className="py-2 text-sm font-medium text-slate-700 dark:text-slate-300 text-right">
-                  {item.amount.toFixed(2)}
+                <div className="flex gap-2 items-center">
+                  <input
+                    type="number"
+                    min="1"
+                    value={item.quantity}
+                    onChange={(e) => onUpdateItem(item.id, 'quantity', parseFloat(e.target.value) || 0)}
+                    placeholder="Qty"
+                    className="w-20 px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                  />
+                  <span className="text-slate-400">×</span>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={item.rate}
+                    onChange={(e) => onUpdateItem(item.id, 'rate', parseFloat(e.target.value) || 0)}
+                    placeholder="Rate"
+                    className="flex-1 px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                  />
+                  <span className="text-sm font-medium text-slate-700 dark:text-slate-300 w-16 text-right">{item.amount.toFixed(2)}</span>
+                  {data.items.length > 1 && (
+                    <button
+                      onClick={() => onRemoveItem(item.id)}
+                      className="p-2 text-slate-400 hover:text-red-600 transition-colors"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  )}
                 </div>
               </div>
-              <div className="col-span-1">
-                {data.items.length > 1 && (
-                  <button
-                    onClick={() => onRemoveItem(item.id)}
-                    className="p-2 text-slate-400 hover:text-red-600 transition-colors"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                )}
+              {/* Desktop: 12-column grid */}
+              <div className="hidden sm:grid grid-cols-12 gap-3 items-start">
+                <div className="col-span-5">
+                  <input
+                    type="text"
+                    value={item.description}
+                    onChange={(e) => onUpdateItem(item.id, 'description', e.target.value)}
+                    placeholder="Item description"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                  />
+                </div>
+                <div className="col-span-2">
+                  <input
+                    type="number"
+                    min="1"
+                    value={item.quantity}
+                    onChange={(e) => onUpdateItem(item.id, 'quantity', parseFloat(e.target.value) || 0)}
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                  />
+                </div>
+                <div className="col-span-3">
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={item.rate}
+                    onChange={(e) => onUpdateItem(item.id, 'rate', parseFloat(e.target.value) || 0)}
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                  />
+                </div>
+                <div className="col-span-1">
+                  <div className="py-2 text-sm font-medium text-slate-700 dark:text-slate-300 text-right">
+                    {item.amount.toFixed(2)}
+                  </div>
+                </div>
+                <div className="col-span-1">
+                  {data.items.length > 1 && (
+                    <button
+                      onClick={() => onRemoveItem(item.id)}
+                      className="p-2 text-slate-400 hover:text-red-600 transition-colors"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           ))}
@@ -529,7 +586,7 @@ export function InvoiceForm({
           onChange={(e) => onUpdate({ notes: e.target.value })}
           placeholder="Additional notes, payment instructions, or terms..."
           rows={4}
-          className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm resize-none"
+          className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm resize-none bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
         />
       </section>
     </div>
