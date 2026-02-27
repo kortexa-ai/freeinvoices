@@ -19,12 +19,10 @@ export default defineConfig({
     },
     server: {
         host: "0.0.0.0",
-        port: 8022,
-        open: true,
+        port: 8105,
     },
     preview: {
         host: "0.0.0.0",
-        port: 8022,
-        open: true,
+        port: 8105,
     },
 });

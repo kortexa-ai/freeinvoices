@@ -97,6 +97,40 @@ export function usePersistentInvoice() {
     };
   });
 
+  // Read URL params on mount for deep link pre-fill
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const supportedParams = [
+      'companyName', 'companyEmail', 'companyPhone', 'companyAddress',
+      'clientName', 'clientEmail', 'clientAddress',
+    ];
+
+    const updates = {};
+    for (const key of supportedParams) {
+      const value = params.get(key);
+      if (value) {
+        updates[key] = value;
+      }
+    }
+
+    if (Object.keys(updates).length > 0) {
+      // Only merge into fields that are currently empty
+      setInvoiceData(prev => {
+        const merged = { ...prev };
+        for (const [key, value] of Object.entries(updates)) {
+          if (!prev[key]) {
+            merged[key] = value;
+          }
+        }
+        return merged;
+      });
+
+      // Clean URL without triggering a page reload
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   // Persist company data whenever it changes
   useEffect(() => {
     if (typeof window === 'undefined') return;

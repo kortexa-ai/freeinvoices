@@ -1,4 +1,10 @@
-import { Plus, Trash2, Upload, Image, FilePlus, Trash, Download } from 'lucide-react';
+import { Plus, Trash2, Upload, Image, FilePlus, Trash, Download, PenLine } from 'lucide-react';
+
+const toolUrl = (domain) => {
+  if (window.location.hostname !== 'localhost') return `https://${domain}`;
+  const ports = { 'freesignatures.xyz': 8109 };
+  return ports[domain] ? `https://localhost:${ports[domain]}` : `https://${domain}`;
+};
 
 const templates = [
   { id: 'modern', name: 'Modern', description: 'Clean and contemporary' },
@@ -78,9 +84,18 @@ export function InvoiceForm({
             Clear Saved Data
           </button>
         )}
+        <a
+          href={`${toolUrl('freesignatures.xyz')}/`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ml-auto flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
+        >
+          <PenLine className="w-4 h-4" />
+          Sign this Invoice
+        </a>
         <button
           onClick={() => window.print()}
-          className="ml-auto flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
         >
           <Download className="w-4 h-4" />
           Download
