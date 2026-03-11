@@ -8,6 +8,8 @@ import { useDarkMode } from './hooks/useDarkMode';
 import { useInvoiceHistory } from './hooks/useInvoiceHistory';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 import { useState, useCallback, useEffect } from 'react';
+import ReceiveBanner from './components/ReceiveBanner';
+import { setupReceiver } from './utils/crossSiteTransfer';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import About from './pages/About';
@@ -29,6 +31,8 @@ function InvoiceApp() {
   const [showShortcuts, setShowShortcuts] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [showSaved, setShowSaved] = useState(false);
+
+  useEffect(() => { setupReceiver(); }, []);
 
   // Handle save invoice to history
   const handleSave = useCallback(() => {
@@ -82,6 +86,7 @@ function InvoiceApp() {
         onToggleHistory={handleToggleHistory}
         historyCount={history.length + (draft ? 1 : 0)}
       />
+      <ReceiveBanner />
       {/* Save confirmation toast */}
       {showSaved && (
         <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg shadow-lg animate-fade-in">

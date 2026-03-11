@@ -1,5 +1,8 @@
 import { useState } from 'react';
-import { Plus, Trash2, Upload, Image, FilePlus, Trash, Download, PenLine } from 'lucide-react';
+import { Plus, Trash2, Upload, Image, FilePlus, Trash, Download, PenLine, FileDown } from 'lucide-react';
+import { generatePDF } from '../utils/pdfGenerator';
+import { sendFile } from '../utils/crossSiteTransfer';
+import SendToMenu from './SendToMenu';
 
 const toolUrl = (domain) => {
   if (window.location.hostname !== 'localhost') return `https://${domain}`;
@@ -57,6 +60,27 @@ export function InvoiceForm({
     }
   };
 
+  const getFile = async () => {
+    const el = document.getElementById('invoice-preview');
+    if (!el) return null;
+    return generatePDF(el, { filename: 'invoice.pdf' });
+  };
+
+  const handleDownloadPDF = async () => {
+    const el = document.getElementById('invoice-preview');
+    if (!el) return;
+    const file = await generatePDF(el, { filename: `invoice-${Date.now()}.pdf` });
+    const url = URL.createObjectURL(file);
+    const a = document.createElement('a');
+    a.href = url; a.download = file.name; a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleSignInvoice = async () => {
+    const file = await getFile();
+    if (file) sendFile(toolUrl('freesignatures.xyz'), file);
+  };
+
   const subtotal = data.items.reduce((sum, item) => sum + item.amount, 0);
   const tax = subtotal * (data.taxRate / 100);
   const discount = subtotal * (data.discount / 100);
@@ -99,21 +123,27 @@ export function InvoiceForm({
             </button>
           </div>
         )}
-        <a
-          href={`${toolUrl('freesignatures.xyz')}/`}
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          onClick={handleSignInvoice}
           className="ml-auto flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
         >
           <PenLine className="w-4 h-4" />
           Sign this Invoice
-        </a>
+        </button>
+        <SendToMenu getFile={getFile} fileType="pdf" />
         <button
-          onClick={() => window.print()}
+          onClick={handleDownloadPDF}
           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
         >
+          <FileDown className="w-4 h-4" />
+          Download PDF
+        </button>
+        <button
+          onClick={() => window.print()}
+          className="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
+        >
           <Download className="w-4 h-4" />
-          Download
+          Print
         </button>
       </div>
 
