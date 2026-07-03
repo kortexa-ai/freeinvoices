@@ -6,8 +6,9 @@ import { useEffect, useCallback } from 'react';
  * - Ctrl/Cmd + S: Save invoice (trigger new invoice after save)
  * - Ctrl/Cmd + N: New invoice
  * - Ctrl/Cmd + D: Toggle dark mode
+ * - Ctrl/Cmd + /: Show shortcuts help
  */
-export function useKeyboardShortcuts({ onPrint, onSave, onNewInvoice, onToggleDarkMode }) {
+export function useKeyboardShortcuts({ onPrint, onSave, onNewInvoice, onToggleDarkMode, onShowShortcuts }) {
   const handleKeyDown = useCallback((e) => {
     // Check for Ctrl or Cmd key
     const isCtrl = e.ctrlKey || e.metaKey;
@@ -31,10 +32,14 @@ export function useKeyboardShortcuts({ onPrint, onSave, onNewInvoice, onToggleDa
         e.preventDefault();
         onToggleDarkMode?.();
         break;
+      case '/':
+        e.preventDefault();
+        onShowShortcuts?.();
+        break;
       default:
         break;
     }
-  }, [onPrint, onSave, onNewInvoice, onToggleDarkMode]);
+  }, [onPrint, onSave, onNewInvoice, onToggleDarkMode, onShowShortcuts]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);

@@ -9,7 +9,7 @@ Shared files in this repo:
 - `src/components/SendToMenu.jsx` - "Send to..." dropdown menu
 - `src/components/ReceiveBanner.jsx` - incoming file notification banner
 - `src/hooks/useReceiveFile.js` - hook for receiving cross-site files
-- `src/utils/pdfGenerator.js` - HTML-to-PDF generation (html2canvas + pdf-lib)
+- `src/utils/pdfGenerator.js` - HTML-to-PDF generation (html2canvas-pro + pdf-lib)
 
 
 `src/siteConfig.js` is unique per site and should NOT be synced.

@@ -3,21 +3,24 @@ import { Send, ExternalLink, Loader2, PenLine, Files, Image, Video, AudioLines, 
 import { sendFile } from '../utils/crossSiteTransfer';
 import { SITE_ID } from '../siteConfig';
 
+// Target URLs must point at a page that mounts a receiver (useReceiveFile /
+// FileDropZone) — site navigation is full-page loads, so a file received on
+// a page without a consumer is lost.
 const TARGETS = {
   pdf: [
     { id: 'freesignatures', name: 'Sign PDF', url: 'https://freesignatures.xyz', Icon: PenLine, bg: 'bg-indigo-600' },
-    { id: 'freepdf', name: 'PDF Tools', url: 'https://freepdf.xyz', Icon: Files, bg: 'bg-red-600' },
-    { id: 'freeresumetools', name: 'ATS Check', url: 'https://freeresumetools.xyz', Icon: FileText, bg: 'bg-teal-600' },
+    { id: 'freepdf', name: 'PDF Tools', url: 'https://freepdf.xyz/merge', Icon: Files, bg: 'bg-red-600' },
+    { id: 'freeresumetools', name: 'ATS Check', url: 'https://freeresumetools.xyz/ats-checker', Icon: FileText, bg: 'bg-teal-600' },
   ],
   image: [
-    { id: 'freeimagetools', name: 'Edit Image', url: 'https://freeimagetools.xyz', Icon: Image, bg: 'bg-amber-600' },
-    { id: 'freepdf', name: 'Images to PDF', url: 'https://freepdf.xyz/tools/images-to-pdf', Icon: Files, bg: 'bg-red-600' },
+    { id: 'freeimagetools', name: 'Edit Image', url: 'https://freeimagetools.xyz/resize', Icon: Image, bg: 'bg-amber-600' },
+    { id: 'freepdf', name: 'Images to PDF', url: 'https://freepdf.xyz/images-to-pdf', Icon: Files, bg: 'bg-red-600' },
   ],
   audio: [
-    { id: 'freeaudiotools', name: 'Audio Tools', url: 'https://freeaudiotools.xyz', Icon: AudioLines, bg: 'bg-cyan-600' },
+    { id: 'freeaudiotools', name: 'Audio Tools', url: 'https://freeaudiotools.xyz/convert', Icon: AudioLines, bg: 'bg-cyan-600' },
   ],
   video: [
-    { id: 'freevideotools', name: 'Video Tools', url: 'https://freevideotools.xyz', Icon: Video, bg: 'bg-teal-600' },
+    { id: 'freevideotools', name: 'Video Tools', url: 'https://freevideotools.xyz/convert', Icon: Video, bg: 'bg-teal-600' },
   ],
 };
 
@@ -60,17 +63,25 @@ export default function SendToMenu({ file, getFile, fileType, className = '' }) 
   if (!targets.length) return null;
   if (!file && !getFile) return null;
 
-  const handleSend = async (target) => {
-    setBusy(true);
+  const handleSend = (target) => {
+    // Start file generation and open the popup synchronously in the click
+    // gesture — awaiting first makes Safari block the popup.
+    let filePromise;
     try {
-      const f = file || (getFile ? await getFile() : null);
-      if (f) sendFile(target.url, f);
+      filePromise = Promise.resolve(file || getFile());
     } catch (err) {
       console.error('SendToMenu: failed to generate file', err);
-    } finally {
-      setBusy(false);
       setOpen(false);
+      return;
     }
+    sendFile(target.url, filePromise);
+    setBusy(true);
+    filePromise
+      .catch(() => {}) // logged by sendFile
+      .finally(() => {
+        setBusy(false);
+        setOpen(false);
+      });
   };
 
   return (

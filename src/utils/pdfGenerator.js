@@ -1,9 +1,11 @@
-import html2canvas from 'html2canvas';
+import html2canvas from 'html2canvas-pro';
 import { PDFDocument } from 'pdf-lib';
 
 /**
  * Generate a PDF File from an HTML element.
- * Uses html2canvas to render, then pdf-lib to create a proper multi-page PDF.
+ * Uses html2canvas-pro to render (the maintained fork — plain html2canvas
+ * cannot parse the oklch() colors Tailwind 4 emits), then pdf-lib to create
+ * a proper multi-page PDF.
  * @param {HTMLElement} element - The element to capture
  * @param {object} options
  * @param {string} options.filename - Output filename (default: 'document.pdf')

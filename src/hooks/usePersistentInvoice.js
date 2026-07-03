@@ -141,13 +141,22 @@ export function usePersistentInvoice() {
     }
   }, [companyData]);
 
-  // Track invoice number changes for auto-increment on next visit
+  // Track invoice number changes for auto-increment on next visit.
+  // Only persist once the invoice has content, so page reloads don't
+  // burn invoice numbers before an invoice is actually created.
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    if (invoiceData.invoiceNumber) {
-      localStorage.setItem(LAST_INVOICE_KEY, invoiceData.invoiceNumber);
+    const hasContent =
+      invoiceData.clientName?.trim() ||
+      invoiceData.items?.some(item => item.description?.trim());
+    if (invoiceData.invoiceNumber && hasContent) {
+      try {
+        localStorage.setItem(LAST_INVOICE_KEY, invoiceData.invoiceNumber);
+      } catch (e) {
+        console.warn('Failed to save invoice number:', e);
+      }
     }
-  }, [invoiceData.invoiceNumber]);
+  }, [invoiceData]);
 
   // Update handler that syncs company data to both states
   const handleUpdateInvoice = useCallback((updates) => {

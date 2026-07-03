@@ -28,6 +28,10 @@ const currencies = [
   { id: 'GBP', symbol: '£', name: 'British Pound' },
 ];
 
+// Images are stored as data URLs in localStorage (company data, draft, and
+// history), so cap uploads to stay well under the ~5MB quota.
+const MAX_IMAGE_SIZE = 1024 * 1024; // 1MB
+
 export function InvoiceForm({
   data,
   onUpdate,
@@ -38,9 +42,15 @@ export function InvoiceForm({
   onClearStoredData,
 }) {
   const [confirmClear, setConfirmClear] = useState(false);
+  const [busy, setBusy] = useState(false);
   const handleLogoUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
+      if (file.size > MAX_IMAGE_SIZE) {
+        alert('Image is too large. Please use an image under 1MB.');
+        e.target.value = '';
+        return;
+      }
       const reader = new FileReader();
       reader.onloadend = () => {
         onUpdate({ logo: reader.result });
@@ -52,6 +62,11 @@ export function InvoiceForm({
   const handleHeaderUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
+      if (file.size > MAX_IMAGE_SIZE) {
+        alert('Image is too large. Please use an image under 1MB.');
+        e.target.value = '';
+        return;
+      }
       const reader = new FileReader();
       reader.onloadend = () => {
         onUpdate({ headerImage: reader.result });
@@ -69,16 +84,30 @@ export function InvoiceForm({
   const handleDownloadPDF = async () => {
     const el = document.getElementById('invoice-preview');
     if (!el) return;
-    const file = await generatePDF(el, { filename: `invoice-${Date.now()}.pdf` });
-    const url = URL.createObjectURL(file);
-    const a = document.createElement('a');
-    a.href = url; a.download = file.name; a.click();
-    URL.revokeObjectURL(url);
+    setBusy(true);
+    try {
+      const file = await generatePDF(el, { filename: `invoice-${Date.now()}.pdf` });
+      const url = URL.createObjectURL(file);
+      const a = document.createElement('a');
+      a.href = url; a.download = file.name; a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('PDF generation failed:', err);
+      alert('Failed to generate PDF. Please try again.');
+    } finally {
+      setBusy(false);
+    }
   };
 
-  const handleSignInvoice = async () => {
-    const file = await getFile();
-    if (file) sendFile(toolUrl('freesignatures.xyz'), file);
+  const handleSignInvoice = () => {
+    // Pass the promise so sendFile can open the popup synchronously
+    // in the click gesture (Safari blocks window.open after an await).
+    setBusy(true);
+    const filePromise = getFile();
+    sendFile(toolUrl('freesignatures.xyz'), filePromise);
+    filePromise
+      .catch(() => {}) // logged by sendFile
+      .finally(() => setBusy(false));
   };
 
   const subtotal = data.items.reduce((sum, item) => sum + item.amount, 0);
@@ -125,7 +154,8 @@ export function InvoiceForm({
         )}
         <button
           onClick={handleSignInvoice}
-          className="ml-auto flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
+          disabled={busy}
+          className="ml-auto flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors disabled:opacity-50"
         >
           <PenLine className="w-4 h-4" />
           Sign this Invoice
@@ -133,7 +163,8 @@ export function InvoiceForm({
         <SendToMenu getFile={getFile} fileType="pdf" />
         <button
           onClick={handleDownloadPDF}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+          disabled={busy}
+          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
         >
           <FileDown className="w-4 h-4" />
           Download PDF
@@ -482,6 +513,7 @@ export function InvoiceForm({
                   {data.items.length > 1 && (
                     <button
                       onClick={() => onRemoveItem(item.id)}
+                      aria-label="Remove item"
                       className="p-2 text-slate-400 hover:text-red-600 transition-colors"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -528,6 +560,7 @@ export function InvoiceForm({
                   {data.items.length > 1 && (
                     <button
                       onClick={() => onRemoveItem(item.id)}
+                      aria-label="Remove item"
                       className="p-2 text-slate-400 hover:text-red-600 transition-colors"
                     >
                       <Trash2 className="w-4 h-4" />

@@ -1,21 +1,37 @@
-import { X, Command, Download, Save, FilePlus, Moon, History } from 'lucide-react';
+import { useEffect } from 'react';
+import { X, Command, Download, Save, FilePlus, Moon, History, Keyboard } from 'lucide-react';
 
 export function KeyboardShortcutsHelp({ isOpen, onClose }) {
+  // Close on Escape
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const shortcuts = [
-    { key: 'Ctrl + P', mac: '⌘ + P', icon: Download, description: 'Download PDF' },
+    { key: 'Ctrl + P', mac: '⌘ + P', icon: Download, description: 'Print invoice' },
     { key: 'Ctrl + S', mac: '⌘ + S', icon: Save, description: 'Save invoice to history' },
     { key: 'Ctrl + N', mac: '⌘ + N', icon: FilePlus, description: 'Create new invoice' },
     { key: 'Ctrl + D', mac: '⌘ + D', icon: Moon, description: 'Toggle dark mode' },
     { key: 'Ctrl + H', mac: '⌘ + H', icon: History, description: 'Toggle history panel' },
+    { key: 'Ctrl + /', mac: '⌘ + /', icon: Keyboard, description: 'Show shortcuts' },
   ];
 
   const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 w-full max-w-md overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={onClose}>
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Keyboard shortcuts"
+        className="bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 w-full max-w-md overflow-hidden"
+        onClick={e => e.stopPropagation()}
+      >
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700">
           <div className="flex items-center gap-2">
@@ -26,6 +42,7 @@ export function KeyboardShortcutsHelp({ isOpen, onClose }) {
           </div>
           <button
             onClick={onClose}
+            aria-label="Close"
             className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
           >
             <X className="w-5 h-5" />

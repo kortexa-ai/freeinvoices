@@ -12,17 +12,29 @@ export default function ReceiveBanner() {
   const [fileName, setFileName] = useState(null);
 
   useEffect(() => {
+    let hideTimer;
     const handler = (event) => {
       const file = event.detail?.file;
       if (file) {
         setFileName(file.name);
         setState('received');
-        setTimeout(() => setState(null), 4000);
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(() => setState(null), 4000);
       }
     };
     window.addEventListener('freetools-file-received', handler);
-    return () => window.removeEventListener('freetools-file-received', handler);
+    return () => {
+      clearTimeout(hideTimer);
+      window.removeEventListener('freetools-file-received', handler);
+    };
   }, []);
+
+  // Give up if the transfer never completes (the sender times out at 30s too)
+  useEffect(() => {
+    if (state !== 'waiting') return;
+    const t = setTimeout(() => setState(s => (s === 'waiting' ? null : s)), 30000);
+    return () => clearTimeout(t);
+  }, [state]);
 
   if (!state) return null;
 

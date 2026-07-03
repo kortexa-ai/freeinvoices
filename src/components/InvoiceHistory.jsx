@@ -80,6 +80,7 @@ export function InvoiceHistoryPanel({
             )}
             <button
               onClick={onClose}
+              aria-label="Close history"
               className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
             >
               <X className="w-5 h-5" />
@@ -169,7 +170,8 @@ export function InvoiceHistoryPanel({
                     </button>
                     <button
                       onClick={() => onDeleteInvoice(item.id)}
-                      className="p-1 text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all rounded-lg"
+                      aria-label="Delete invoice"
+                      className="p-1 text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 focus:opacity-100 transition-all rounded-lg"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>

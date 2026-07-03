@@ -39,7 +39,10 @@ function isAllowedOrigin(origin) {
 
 // --- Sender ---
 
-export function sendFile(targetUrl, file) {
+// Accepts a File or a Promise<File> so callers can open the popup
+// synchronously inside the click handler (Safari blocks window.open
+// after an await) and generate the file while the popup loads.
+export function sendFile(targetUrl, fileOrPromise) {
   const separator = targetUrl.includes('?') ? '&' : '?';
   const w = window.open(targetUrl + separator + 'receive=1');
   if (!w) {
@@ -52,21 +55,31 @@ export function sendFile(targetUrl, file) {
 
   function handler(event) {
     if (!isAllowedOrigin(event.origin)) return;
+    if (event.source !== w) return;
     if (event.data?.type !== 'freetools-ready') return;
 
     clearTimeout(timeout);
     cleanup();
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      w.postMessage({
-        type: 'freetools-transfer',
-        fileName: file.name,
-        fileType: file.type,
-        data: reader.result,
-      }, event.origin);
-    };
-    reader.readAsArrayBuffer(file);
+    Promise.resolve(fileOrPromise).then((file) => {
+      if (!file) {
+        w.close();
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        w.postMessage({
+          type: 'freetools-transfer',
+          fileName: file.name,
+          fileType: file.type,
+          data: reader.result,
+        }, event.origin);
+      };
+      reader.readAsArrayBuffer(file);
+    }).catch((err) => {
+      console.error('freetools transfer: failed to prepare file', err);
+      w.close();
+    });
   }
 
   window.addEventListener('message', handler);
@@ -86,6 +99,7 @@ export function setupReceiver() {
   }
 
   function handler(event) {
+    if (!isAllowedOrigin(event.origin)) return;
     if (event.data?.type !== 'freetools-transfer') return;
 
     const { fileName, fileType, data } = event.data;
