@@ -2,6 +2,7 @@ import { InvoiceForm } from './components/InvoiceForm';
 import { InvoicePreview } from './components/InvoicePreview';
 import Layout from './components/Layout';
 import { InvoiceHistoryPanel } from './components/InvoiceHistory';
+import ToolInfo from './components/ToolInfo';
 import { KeyboardShortcutsHelp } from './components/KeyboardShortcutsHelp';
 import { usePersistentInvoice } from './hooks/usePersistentInvoice';
 import { useDarkMode } from './hooks/useDarkMode';
@@ -106,6 +107,8 @@ function InvoiceApp() {
           </div>
         </div>
       </div>
+
+      <ToolInfo />
 
       {/* History Panel */}
       <InvoiceHistoryPanel
