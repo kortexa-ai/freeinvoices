@@ -11,8 +11,8 @@ export default defineConfig({
         rollupOptions: {
             external: [],
             output: {
-                manualChunks: {
-                    "react-vendor": ["react", "react-dom", "react/jsx-runtime"],
+                manualChunks(id) {
+                    if (id.includes("/node_modules/react")) return "react-vendor";
                 },
             },
         },
